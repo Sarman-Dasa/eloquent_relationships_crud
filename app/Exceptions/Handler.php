@@ -2,11 +2,14 @@
 
 namespace App\Exceptions;
 
+use App\Http\Traits\ResponseTraits;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
 class Handler extends ExceptionHandler
 {
+    use ResponseTraits;
     /**
      * A list of exception types with their corresponding custom log levels.
      *
@@ -47,4 +50,11 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+    // public function render($request, Throwable $e)
+    // {
+    //     if ($e instanceof ModelNotFoundException) {
+    //         return $this->dataNotFound('Data Not Found on id :' . substr($e->getMessage(), -2));
+    //     }
+    // }
 }
