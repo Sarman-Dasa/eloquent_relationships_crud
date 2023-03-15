@@ -31,6 +31,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'created_at',
+        'updated_at',
     ];
 
     /**
@@ -41,4 +43,16 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    //User-Image relation
+    public function image()
+    {
+        return $this->hasOne(Image::class,'user_id','id');
+    }
+
+    //User-Mobilenumber relation
+    public function mobileNumbers()
+    {
+        return $this->hasMany(Mobilenumber::class,'user_id','id');
+    }
 }
