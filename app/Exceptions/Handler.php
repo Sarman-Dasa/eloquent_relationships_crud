@@ -51,10 +51,10 @@ class Handler extends ExceptionHandler
         });
     }
 
-    // public function render($request, Throwable $e)
-    // {
-    //     if ($e instanceof ModelNotFoundException) {
-    //         return $this->dataNotFound('Data Not Found on id :' . substr($e->getMessage(), -2));
-    //     }
-    // }
+    public function render($request, Throwable $e)
+    {
+        if ($e instanceof ModelNotFoundException) {
+            return $this->dataNotFound('Data Not Found on id :' . substr($e->getMessage(), -2));
+        }
+    }
 }
