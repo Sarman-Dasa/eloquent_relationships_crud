@@ -51,15 +51,15 @@ class OrderController extends Controller
 
     public function get($id)
     {
-        $product = Order::with('product','category')->findOrFail($id);
+        $order = Order::with('product','category')->findOrFail($id);
 
-        return $this->sendSuccessResponse('Order',$product);
+        return $this->sendSuccessResponse('Order',$order);
     }
 
     public function destroy($id)
     {
-        $product = Order::findOrFail($id);
-        $product->delete();
+        $order = Order::findOrFail($id);
+        $order->delete();
 
         return $this->sendSuccessResponse('Order Deleted Successfully');
     }
