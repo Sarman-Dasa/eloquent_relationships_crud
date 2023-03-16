@@ -6,6 +6,7 @@ use App\Http\Controllers\ImageController;
 use App\Http\Controllers\MobilenumberController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\TodoController;
 use App\Http\Controllers\UserController;
 use App\Models\Image;
 use App\Models\Mobilenumber;
@@ -80,6 +81,15 @@ Route::middleware(['auth:sanctum'])->group(function(){
         Route::patch('update/{id}','update')->name('order.update');
         Route::get('get/{id}','get')->name('order.get');
         Route::delete('delete/{id}','destroy')->name('order.create');
+    });
+
+    //Many-To-Many Relationship
+    Route::controller(TodoController::class)->prefix('todo')->group(function(){
+        Route::post('list','list')->name('todo.list');
+        Route::post('create','create')->name('todo.create');
+        Route::patch('update/{id}','update')->name('todo.update');
+        Route::get('get/{id}','get')->name('todo.get');
+        Route::delete('delete/{id}','destroy')->name('todo.create');
     });
 
 });
