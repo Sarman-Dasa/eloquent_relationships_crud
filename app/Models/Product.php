@@ -22,4 +22,10 @@ class Product extends Model
     {
         return $this->hasMany(Order::class,'product_id','id');
     }
+
+    // //Product-Order relation latestOrder
+    public function latestOrder()
+    {
+        return $this->hasOne(Order::class,'product_id','id')->latestOfMany();
+    }
 }

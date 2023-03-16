@@ -56,7 +56,7 @@ class ProductController extends Controller
 
     public function get($id)
     {
-        $product = Product::with('category','orders')->findOrFail($id);
+        $product = Product::with('category','latestOrder')->findOrFail($id);
 
         return $this->sendSuccessResponse('Product',$product);
     }
