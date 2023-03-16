@@ -5,7 +5,10 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\MobilenumberController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PlayerController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\StudentController;
+use App\Http\Controllers\TeamController;
 use App\Http\Controllers\TodoController;
 use App\Http\Controllers\UserController;
 use App\Models\Image;
@@ -92,4 +95,31 @@ Route::middleware(['auth:sanctum'])->group(function(){
         Route::delete('delete/{id}','destroy')->name('todo.create');
     });
 
+    //Polymorphic Relationship
+    
+    //one-to-one 
+    Route::controller(TeamController::class)->prefix('team')->group(function(){
+        Route::post('list','list')->name('team.list');
+        Route::post('create','create')->name('team.create');
+        Route::patch('update/{id}','update')->name('team.update');
+        Route::get('get/{id}','get')->name('team.get');
+        Route::delete('delete/{id}','destroy')->name('team.create');
+    });
+
+     Route::controller(PlayerController::class)->prefix('player')->group(function(){
+        Route::post('list','list')->name('player.list');
+        Route::post('create','create')->name('player.create');
+        Route::patch('update/{id}','update')->name('player.update');
+        Route::get('get/{id}','get')->name('player.get');
+        Route::delete('delete/{id}','destroy')->name('player.create');
+    });
+
+    //One-To-Many
+    Route::controller(StudentController::class)->prefix('student')->group(function(){
+        Route::post('list','list')->name('student.list');
+        Route::post('create','create')->name('student.create');
+        Route::patch('update/{id}','update')->name('student.update');
+        Route::get('get/{id}','get')->name('student.get');
+        Route::delete('delete/{id}','destroy')->name('student.create');
+    });
 });
