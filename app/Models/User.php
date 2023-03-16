@@ -55,4 +55,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Mobilenumber::class,'user_id','id');
     }
+
+    //Many-To-Many User-Todo Relation
+     public function users()
+     {
+         return $this->belongsToMany(Todo::class,'user_todos','user_id','todo_id');
+     }
 }
