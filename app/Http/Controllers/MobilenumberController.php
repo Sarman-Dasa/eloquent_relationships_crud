@@ -44,8 +44,8 @@ class MobilenumberController extends Controller
             return $this->sendValidationError($validation);
         
         
-        $image = Mobilenumber::findOrFail($id);
-        $image->update($request->only(['number']));
+        $mobileNumber = Mobilenumber::findOrFail($id);
+        $mobileNumber->update($request->only(['number']));
         return $this->sendSuccessResponse('User Mobile number Updated Successfully');
     }
 
@@ -60,8 +60,8 @@ class MobilenumberController extends Controller
     //destroy
     public function destroy($id)
     {
-        $image = Mobilenumber::findOrFail($id);
-        $image->delete();
+        $mobileNumber = Mobilenumber::findOrFail($id);
+        $mobileNumber->delete();
 
         return $this->sendSuccessResponse('Mobile Number Deleted Successfully');
     }
