@@ -15,7 +15,8 @@ class Team extends Model
     {
         return $this->hasMany(Player::class,'team_id','id')->with('run');
     }
-    //
+
+    //Team-Run Relation
     public function run()
     {
         return $this->morphOne(Run::class,'runable');
