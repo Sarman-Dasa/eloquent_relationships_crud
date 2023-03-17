@@ -14,13 +14,13 @@ class Category extends Model
         'description',
     ]; 
 
-    //Category-Product relation
+    //Category-Product relation one-to-many
     public function products()
     {
         return $this->hasMany(Product::class,'category_id','id');
     }
 
-    //Category-Order relation
+    //Category-Order relation  Has Many Through
     public function orders()
     {
         return $this->hasManyThrough(Order::class,Product::class,'category_id','product_id');
