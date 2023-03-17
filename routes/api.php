@@ -8,12 +8,14 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PlayerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\TodoController;
 use App\Http\Controllers\UserController;
 use App\Models\Image;
 use App\Models\Mobilenumber;
 use App\Models\Order;
+use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -121,5 +123,14 @@ Route::middleware(['auth:sanctum'])->group(function(){
         Route::patch('update/{id}','update')->name('student.update');
         Route::get('get/{id}','get')->name('student.get');
         Route::delete('delete/{id}','destroy')->name('student.create');
+    });
+
+     //One-To-Many
+     Route::controller(TeacherController::class)->prefix('teacher')->group(function(){
+        Route::post('list','list')->name('teacher.list');
+        Route::post('create','create')->name('teacher.create');
+        Route::patch('update/{id}','update')->name('teacher.update');
+        Route::get('get/{id}','get')->name('teacher.get');
+        Route::delete('delete/{id}','destroy')->name('teacher.create');
     });
 });
