@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Traits\ResponseTraits;
-use App\Models\Notice;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
-use Illuminate\Http\ResponseTrait;
 
 class TeacherController extends Controller
 {
@@ -39,16 +37,6 @@ class TeacherController extends Controller
                 'body'  =>  $body,
             ]);
         }
-    /*
-        foreach ($request->body as $body) {
-            Notice::create([
-                'body'              =>  $body,
-                'noticeable_id'     =>  $teacher->id,
-                'noticeable_type'   =>  'App\Models\Teacher',
-            ]);
-        }
-
-    */
 
         return $this->sendSuccessResponse('Teacher Data Added Successfully');
     }
@@ -66,11 +54,11 @@ class TeacherController extends Controller
         if($validation->fails())
             return $this->sendValidationError($validation);
 
-        $student = Teacher::findOrFail($id);
+        $teacher = Teacher::findOrFail($id);
         
-        $student->update($request->only(['name','email','mobile']));
+        $teacher->update($request->only(['name','email','mobile']));
         
-        $student->notices()->updateOrCreate(
+        $teacher->notices()->updateOrCreate(
         ['id' => $request->notice_id],
         [
             'body'  =>  $request->body,
@@ -81,18 +69,19 @@ class TeacherController extends Controller
 
     public function get($id)
     {
-        $student = Teacher::with('notices')->findOrFail($id);
-        return $this->sendSuccessResponse('Teacher Data',$student);
+        $teacher = Teacher::with('notices','subjects','latestNotice')->findOrFail($id);
+        return $this->sendSuccessResponse('Teacher Data',$teacher);
     }
 
 
     public function destroy($id)
     {
-        $student = Teacher::FindOrFail($id);
+        $teacher = Teacher::FindOrFail($id);
         
-        $student->delete();
-        $student->notices()->delete();        
+        $teacher->delete();
+        $teacher->notices()->delete();        
         
+        $teacher->subjects()->detach();
         return $this->sendSuccessResponse('Teacher Data Deleted Successfully');
     }
 
