@@ -70,7 +70,7 @@ class StudentController extends Controller
 
     public function get($id)
     {
-        $student = Student::with('notices')->findOrFail($id);
+        $student = Student::with('notices','subjects','latestNotice')->findOrFail($id);
         return $this->sendSuccessResponse('Student Data',$student);
     }
 
@@ -81,6 +81,8 @@ class StudentController extends Controller
         
         $student->delete();
         $student->notices()->delete();        
+        
+        $student->subjects()->detach();
         
         return $this->sendSuccessResponse('Student Data Deleted Successfully');
     }
