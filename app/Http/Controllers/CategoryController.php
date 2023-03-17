@@ -51,8 +51,8 @@ class CategoryController extends Controller
 
     public function get($id)
     {
-        $category = Category::with('products','orders')->findOrFail($id);
-
+       // $category = Category::with('products','orders')->findOrFail($id);
+        $category = Category::with('products','orders')->withCount('products','orders')->withSum('products','price')->withMin('products','price')->findOrFail($id);
         return $this->sendSuccessResponse('Category',$category);
     }
 
