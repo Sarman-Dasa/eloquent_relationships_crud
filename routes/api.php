@@ -8,14 +8,13 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PlayerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\StudentSubjectController;
+use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\TeacherSubjectController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\TodoController;
 use App\Http\Controllers\UserController;
-use App\Models\Image;
-use App\Models\Mobilenumber;
-use App\Models\Order;
-use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -30,16 +29,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
+//Login-Registration 
 Route::controller(AuthController::class)->group(function(){
     Route::post('register','register');
     Route::post('login','login');
 });
 
 Route::middleware(['auth:sanctum'])->group(function(){
+    //One-To-One User-Image
    Route::controller(ImageController::class)->prefix('image')->group(function()
    {
         Route::post('list','list')->name('image.list');
@@ -56,6 +53,7 @@ Route::middleware(['auth:sanctum'])->group(function(){
         Route::delete('delete','destroy')->name('user.create');
    });
 
+   //One-To-Many User-Mobile 
    Route::controller(MobilenumberController::class)->prefix('mobile')->group(function(){
         Route::post('list','list')->name('mobile.list');
         Route::post('create','create')->name('mobile.create');
@@ -64,6 +62,7 @@ Route::middleware(['auth:sanctum'])->group(function(){
         Route::delete('delete/{id}','destroy')->name('mobile.create');
     });
 
+   //  Has Many Through and Has One Through 
     Route::controller(CategoryController::class)->prefix('category')->group(function(){
         Route::post('list','list')->name('category.list');
         Route::post('create','create')->name('category.create');
@@ -88,7 +87,7 @@ Route::middleware(['auth:sanctum'])->group(function(){
         Route::delete('delete/{id}','destroy')->name('order.create');
     });
 
-    //Many-To-Many Relationship
+    //Many-To-Many Relationship  User-Todo
     Route::controller(TodoController::class)->prefix('todo')->group(function(){
         Route::post('list','list')->name('todo.list');
         Route::post('create','create')->name('todo.create');
@@ -99,7 +98,8 @@ Route::middleware(['auth:sanctum'])->group(function(){
 
     //Polymorphic Relationship
     
-    //one-to-one 
+    //one-to-one
+    //Team-Player-Run  
     Route::controller(TeamController::class)->prefix('team')->group(function(){
         Route::post('list','list')->name('team.list');
         Route::post('create','create')->name('team.create');
@@ -116,7 +116,8 @@ Route::middleware(['auth:sanctum'])->group(function(){
         Route::delete('delete/{id}','destroy')->name('player.create');
     });
 
-    //One-To-Many
+    //One-To-Many 
+    //Student-Teacher-notice
     Route::controller(StudentController::class)->prefix('student')->group(function(){
         Route::post('list','list')->name('student.list');
         Route::post('create','create')->name('student.create');
@@ -132,5 +133,27 @@ Route::middleware(['auth:sanctum'])->group(function(){
         Route::patch('update/{id}','update')->name('teacher.update');
         Route::get('get/{id}','get')->name('teacher.get');
         Route::delete('delete/{id}','destroy')->name('teacher.create');
+    });
+
+     // Many-To-Many 
+     // Student-Teacher-Subject 
+     Route::controller(SubjectController::class)->prefix('subject')->group(function(){
+        Route::post('list','list')->name('subject.list');
+        Route::post('create','create')->name('subject.create');
+        Route::patch('update/{id}','update')->name('subject.update');
+        Route::get('get/{id}','get')->name('subject.get');
+        Route::delete('delete/{id}','destroy')->name('subject.create');
+    });
+
+    //Many-To-Many
+    Route::controller(StudentSubjectController::class)->prefix('student-subject')->group(function(){
+        Route::post('create','create')->name('student-subject.create');
+        Route::patch('update','update')->name('student-subject.update');
+    });
+
+     //Many-To-Many
+     Route::controller(TeacherSubjectController::class)->prefix('teacher-subject')->group(function(){
+        Route::post('create','create')->name('teacher-subject.create');
+        Route::patch('update','update')->name('teacher-subject.update');
     });
 });
