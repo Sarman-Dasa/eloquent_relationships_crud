@@ -31,31 +31,14 @@ class StudentController extends Controller
         
         $student = Student::create($request->only(['name','email','mobile']));
 
-        // $body = array(
-        //     new Notice(array('body'  => 'this first body')),
-        //     new Notice(array('body'  => 'this second body')),
-        // );
-
-        //$bodyArray = array();
-        // foreach ($request->body as $body) {
-        //     //array_push($bodyArray, new Notice(array('body'  => $body)));
-        //     $student->notices()->save(new Notice(array('body'  => $body)));
-        // }
-        
-        $student->notices()->saveMany([
-            new Notice(['body'  => $request->body])
-        ]);
-
-      /*  $student->notices()->saveMany($bodyArray);
-
-        $notice = new Notice;
-        $notice->body = $request->body;
-       
         foreach ($request->body as $body) {
-            $notice->body = $body;
-            $student->notices()->save($notice);
-        } */
-
+            Notice::create([
+                'body'              =>  $body,
+                'noticeable_id'     =>  $student->id,
+                'noticeable_type'   =>  'App\Models\Student',
+            ]);
+        }
+        
         return $this->sendSuccessResponse('Student Data Added Successfully');
     }
 
@@ -66,22 +49,39 @@ class StudentController extends Controller
             'email'         =>  'required|email|unique:students,email,'.$id.',id',
             'mobile'        =>  'required|digits:10|unique:students,mobile,'.$id.',id',
             'body'          =>  'required',
+            'notice_id'     =>  'required|numeric'
         ]);
 
         if($validation->fails())
             return $this->sendValidationError($validation);
-        
-        $student = Student::findOrFail($id);
-        $student->update($request->only(['name','email','mobile']));
 
-        foreach ($request->body as $body) {
-            $task2 = $student->notices->toArray();
-            $task2 = array_push($task2,$id,$body);
-            $student->notices()->sync(array($task2));
-            //$student->notices()->update((array('body'   =>  $body)));
-        }
+        $student = Student::findOrFail($id);
+        
+        $student->update($request->only(['name','email','mobile']));
+        
+        $student->notices()->updateOrCreate(
+        ['id' => $request->notice_id],
+        [
+            'body'  =>  $request->body,
+        ]);
 
         return $this->sendSuccessResponse('Student Data Updated Successfully');
     }
 
+    public function get($id)
+    {
+        $student = Student::with('notices')->findOrFail($id);
+        return $this->sendSuccessResponse('Student Data',$student);
+    }
+
+
+    public function destroy($id)
+    {
+        $student = Student::FindOrFail($id);
+        
+        $student->delete();
+        $student->notices()->delete();        
+        
+        return $this->sendSuccessResponse('Student Data Deleted Successfully');
+    }
 }
