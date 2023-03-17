@@ -21,6 +21,7 @@ class Player extends Model
         return $this->belongsTo(Team::class,'team_id','id');
     }
 
+    //Player-Run Relation 
     public function run()
     {
         return $this->morphOne(Run::class,'runable');
