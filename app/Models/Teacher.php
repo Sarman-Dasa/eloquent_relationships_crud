@@ -19,4 +19,16 @@ class Teacher extends Model
     {
         return $this->morphMany(Notice::class,'noticeable');
     }
+
+    //Teacher-Subject Relation Many-to-Many
+    public function subjects()
+    {
+        return $this->morphToMany(Subject::class,'courseable')->withTimestamps();
+    }
+
+    //get latest Notice
+    public function latestNotice()
+    {
+        return $this->morphOne(Notice::class,'noticeable')->latestOfMany();
+    }
 }
