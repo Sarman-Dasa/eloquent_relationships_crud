@@ -56,8 +56,7 @@ class ProductController extends Controller
 
     public function get($id)
     {
-        $product = Product::with('category','latestOrder')->findOrFail($id);
-
+        $product = Product::with('category','orders','latestOrder')->withCount('orders AS Number-Of-Orders')->withSum('orders AS Total-Quantity-Of-Orders','quantity')->withMin('orders','quantity')->findOrFail($id);
         return $this->sendSuccessResponse('Product',$product);
     }
 
